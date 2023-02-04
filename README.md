@@ -68,7 +68,7 @@ Reference Document: https://notiz.dev/blog/send-emails-with-nestjs
 
   #### Step 3: Add following compiler options to nest-cli.json
     "compilerOptions": {
-      "assets": [{ "include": "mail/templates/**/*", "outDir": "dist/" }],
+      "assets": [{ "include": "shared/mail/templates/**/*", "outDir": "dist/" }],
       "watchAssets": true
     }
 
