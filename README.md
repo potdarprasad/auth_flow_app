@@ -84,3 +84,9 @@ Reference Document: https://notiz.dev/blog/send-emails-with-nestjs
   ```yarn add -D @types/passport-jwt @types/node```
 
   #### 4.2: 
+  
+  
+ *****************************
+ 
+ ### To Run The App
+ #### Create New ```.env``` file and paste contents from ```.env.example``` and change respective config credentials
