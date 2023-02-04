@@ -12,23 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const mail_service_1 = require("./shared/mail/mail.service");
 let AppController = class AppController {
-    constructor(appService) {
+    constructor(appService, mailService) {
         this.appService = appService;
+        this.mailService = mailService;
     }
-    getHello() {
+    async getHello() {
+        console.log('aa');
+        await this.mailService.sendOtp({ firstName: 'Prasad', lastName: 'Potdar', email: 'prasadmpotdar22@gmail.com', password: 'pass' }, '12345');
         return this.appService.getHello();
     }
 };
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('hello'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", Promise)
 ], AppController.prototype, "getHello", null);
 AppController = __decorate([
     (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    __metadata("design:paramtypes", [app_service_1.AppService, mail_service_1.MailService])
 ], AppController);
 exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map

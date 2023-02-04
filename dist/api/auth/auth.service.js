@@ -17,9 +17,10 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const entities_1 = require("../../shared/database/entities");
 const typeorm_2 = require("typeorm");
-const OtpGenerator = require("otp-generator");
+const auth_helper_1 = require("./auth.helper");
 let AuthService = class AuthService {
-    constructor(userRepository) {
+    constructor(authHelper, userRepository) {
+        this.authHelper = authHelper;
         this.userRepository = userRepository;
     }
     async signUp(newUser) {
@@ -27,7 +28,8 @@ let AuthService = class AuthService {
         if (user) {
             throw new common_1.HttpException('User With This Email Already Exists', common_1.HttpStatus.CONFLICT);
         }
-        const otp = this.generateNumericOtp();
+        newUser.password = this.authHelper.encodePassword(newUser.password);
+        const otp = this.authHelper.generateNumericOtp();
         newUser = this.userRepository.create(Object.assign({ otp }, newUser));
         await this.userRepository.save(newUser);
         return 'User Created Successfully';
@@ -45,22 +47,12 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Invalid Otp', common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async resendOtp(data) {
-        const user = await this.userRepository.findOneBy({ email: data.email });
-        if (!user) {
-            throw new common_1.HttpException('Invalid User Email', common_1.HttpStatus.BAD_REQUEST);
-        }
-        const otp = this.generateNumericOtp();
-        await this.userRepository.update({ email: data.email }, { otp, isVerified: false });
-    }
-    generateNumericOtp() {
-        return OtpGenerator.generate(6, { specialChars: false, upperCaseAlphabets: false, lowerCaseAlphabets: false, digits: true });
-    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(entities_1.UserEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(entities_1.UserEntity)),
+    __metadata("design:paramtypes", [auth_helper_1.AuthHelper,
+        typeorm_2.Repository])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

@@ -12,11 +12,12 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
 const api_module_1 = require("./api/api.module");
+const mail_module_1 = require("./shared/mail/mail.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot({ isGlobal: true }), api_module_1.ApiModule],
+        imports: [config_1.ConfigModule.forRoot({ isGlobal: true }), api_module_1.ApiModule, mail_module_1.MailModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

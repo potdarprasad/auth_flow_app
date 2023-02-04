@@ -1,11 +1,11 @@
 import { UserEntity } from '../../shared/database/entities';
 import { SignUpDto, VerifyUserDto } from '../../shared/dto';
 import { Repository } from 'typeorm';
+import { AuthHelper } from './auth.helper';
 export declare class AuthService {
+    private readonly authHelper;
     private readonly userRepository;
-    constructor(userRepository: Repository<UserEntity>);
+    constructor(authHelper: AuthHelper, userRepository: Repository<UserEntity>);
     signUp(newUser: SignUpDto): Promise<string>;
     verifyUser(data: VerifyUserDto): Promise<string>;
-    resendOtp(data: VerifyUserDto): Promise<void>;
-    generateNumericOtp(): any;
 }

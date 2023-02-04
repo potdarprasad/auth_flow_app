@@ -10,6 +10,7 @@ async function bootstrap() {
     const port = config.get('PORT') || 3000;
     app.useGlobalPipes(new common_1.ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
     app.setGlobalPrefix('api');
+    console.log('port', port);
     await app.listen(port);
 }
 bootstrap();
