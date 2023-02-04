@@ -6,7 +6,7 @@ import { ApiModule } from './api/api.module';
 import { MailModule } from './shared/mail/mail.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), ApiModule, MailModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), ApiModule],
   controllers: [AppController],
   providers: [AppService],
 })
