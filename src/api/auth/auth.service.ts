@@ -4,6 +4,7 @@ import { UserEntity } from '../../shared/database/entities';
 import { SignUpDto, VerifyUserDto } from '../../shared/dto';
 import { Repository } from 'typeorm';
 import { AuthHelper } from './auth.helper';
+import { MailService } from '../../shared/mail/mail.service';
 
 
 @Injectable()
@@ -12,6 +13,7 @@ export class AuthService {
         private readonly authHelper: AuthHelper,
         @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>,
+        private readonly mailService: MailService,
     ){}
 
     async signUp(newUser: SignUpDto){
@@ -29,7 +31,7 @@ export class AuthService {
 
         await this.userRepository.save(newUser);
 
-        //:TODO Send Mail To User Email For OTP Verification
+        await this.mailService.sendOtp(newUser, otp);
 
         return 'User Created Successfully';
     }
@@ -47,6 +49,9 @@ export class AuthService {
         }else{
             throw new HttpException('Invalid Otp', HttpStatus.BAD_REQUEST);
         }
+    }
 
+    async resendVerifyOtpMail(){
+        
     }
 }

@@ -15,13 +15,15 @@ const entities_1 = require("../../shared/database/entities");
 const jwt_1 = require("@nestjs/jwt");
 const strategies_1 = require("./strategies");
 const auth_helper_1 = require("./auth.helper");
+const mail_module_1 = require("../../shared/mail/mail.module");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             jwt_1.JwtModule.register({}),
-            typeorm_1.TypeOrmModule.forFeature([entities_1.UserEntity,])
+            typeorm_1.TypeOrmModule.forFeature([entities_1.UserEntity,]),
+            mail_module_1.MailModule
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, auth_helper_1.AuthHelper, strategies_1.AccessTokenStrategy, strategies_1.RrefresTokenStrategy],

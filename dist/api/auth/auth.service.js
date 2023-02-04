@@ -18,10 +18,12 @@ const typeorm_1 = require("@nestjs/typeorm");
 const entities_1 = require("../../shared/database/entities");
 const typeorm_2 = require("typeorm");
 const auth_helper_1 = require("./auth.helper");
+const mail_service_1 = require("../../shared/mail/mail.service");
 let AuthService = class AuthService {
-    constructor(authHelper, userRepository) {
+    constructor(authHelper, userRepository, mailService) {
         this.authHelper = authHelper;
         this.userRepository = userRepository;
+        this.mailService = mailService;
     }
     async signUp(newUser) {
         const user = await this.userRepository.findOneBy({ email: newUser.email });
@@ -32,6 +34,7 @@ let AuthService = class AuthService {
         const otp = this.authHelper.generateNumericOtp();
         newUser = this.userRepository.create(Object.assign({ otp }, newUser));
         await this.userRepository.save(newUser);
+        await this.mailService.sendOtp(newUser, otp);
         return 'User Created Successfully';
     }
     async verifyUser(data) {
@@ -47,12 +50,15 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Invalid Otp', common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async resendVerifyOtpMail() {
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, typeorm_1.InjectRepository)(entities_1.UserEntity)),
     __metadata("design:paramtypes", [auth_helper_1.AuthHelper,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        mail_service_1.MailService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map
